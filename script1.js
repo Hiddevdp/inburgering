@@ -177,7 +177,6 @@ sentences.forEach((sentence, index) => {
   sentenceElement.className = "sentence";
   sentenceElement.textContent = `${index + 1}. ${sentence}`;
 
-  // Black overlay
   const overlay = document.createElement("div");
   overlay.className = "sentence-overlay";
 
