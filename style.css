@@ -24,19 +24,20 @@ h1 {
   margin: auto;
 }
 
+.sentence {
+  min-width: 150px;
+  max-width: 150px;
+}
+
 .row {
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid black;
   height: 50px;
   padding-right: 10px;
-}
-
-.play-button {
-  margin-left: 10px;
 }
 
 .row {
@@ -49,11 +50,41 @@ h1 {
   width: 30px;
 }
 .dutch {
-  width: 200px;
+  width: 140px;
 }
 .switch-label {
   cursor: pointer;
   input {
     transform: scale(1.5);
   }
+}
+.toggle-answer {
+  transform: scale(1.5);
+}
+
+.answer {
+  margin: 0;
+}
+
+.sentence-wrapper {
+  position: relative;
+  display: inline-block;
+  min-width: 150px;
+  max-width: 150px;
+  cursor: pointer;
+  .sentence {
+    margin: auto;
+  }
+}
+
+.sentence-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  background: black;
+  opacity: 1;
+  transition: opacity 0.2s;
+  pointer-events: auto;
 }

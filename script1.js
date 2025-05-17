@@ -79,15 +79,120 @@ const sentences = [
   "Hoe gaat het met u?",
 ];
 
+const answers = [
+  "Bij mijn partner",
+  "Mijn partner",
+  "Mijn partner en mijn kat",
+  "praten met mijn partner",
+  "Van mijn partner",
+  "Voor mijn Partner",
+  "Om acht uur",
+  "Om tien uur",
+  "Het is nu twaalf uur",
+  "Om half zes",
+  "Om acht uur",
+  "In Peru",
+  "In Amsterdam",
+  "In Lima",
+  "In Madrid",
+  "In Peru",
+  "Met de bus",
+  "Met de bus",
+  "Met de taxi",
+  "Amstel Bier",
+  "Taart",
+  "Pasta",
+  "Een broodje kaas",
+  "Kroket en patatjes",
+  "Kip en pasta",
+  "Patatje met satésaus",
+  "Aardbei",
+  "Ik ga lasagne eten",
+  "Tomaat en mais",
+  "Heel moeilijk",
+  "Heel mooi",
+  "Heel mooi",
+  "Naar popmuziek",
+  "Van popmuziek",
+  "Mei",
+  "Dinsdag",
+  "Een Chocoladeletter",
+  "Koningsdag",
+  "Katten en konijnen",
+  "Blauw",
+  "Volleybal",
+  "Ik werk vijf dagen in de week",
+  "Ik heb drie collega's",
+  "Corporate communicatie",
+  "Van maandag tot vrijdag",
+  "Meer dan tien keer",
+  "Drie keer per dag",
+  "Ik kijk nooit tv",
+  "Alleen in de auto",
+  "Ik heb één broer",
+  "Zeventien jaar",
+  "Ik heb geen kinderen",
+  "Ik spreek twee talen",
+  "Ik spreek spaans en engels",
+  "Engels",
+  "In een appartement",
+  "In de jumbo",
+  "Met mooi weer",
+  "In zevenennegentig (1997)",
+  "Elke dag",
+  "Op mijn verjaardag",
+  "In juli",
+  "Lopen",
+  "Eten",
+  "Praten/ Koken",
+  "sporten",
+  "Sporten",
+  "Reizen naar Nederland",
+  "werken",
+  "Studeren",
+  "Cornelis Lelylaan 3",
+  "Zes drie een acht zes twee zeven drie zeven",
+  "Leuke mensen",
+  "Nike schoenen /sjunen/",
+  "Mijn kleren",
+  "Zonnig",
+  "Fietsen in Amsterdam",
+  "Goed, met jou?",
+];
+
 const container = document.getElementById("sentence-container");
 
 sentences.forEach((sentence, index) => {
   const row = document.createElement("div");
   row.className = "row";
 
+  // Sentence wrapper for overlay
+  const sentenceWrapper = document.createElement("div");
+  sentenceWrapper.className = "sentence-wrapper";
+  sentenceWrapper.style.position = "relative";
+  sentenceWrapper.style.display = "inline-block";
+  sentenceWrapper.style.cursor = "pointer";
+
   const sentenceElement = document.createElement("p");
   sentenceElement.className = "sentence";
   sentenceElement.textContent = `${index + 1}. ${sentence}`;
+
+  // Black overlay
+  const overlay = document.createElement("div");
+  overlay.className = "sentence-overlay";
+
+  // Toggle overlay on click
+  function toggleOverlay() {
+    overlay.style.opacity = overlay.style.opacity === "0" ? "1" : "0";
+    overlay.style.pointerEvents =
+      overlay.style.opacity === "0" ? "none" : "auto";
+  }
+
+  sentenceElement.addEventListener("click", toggleOverlay);
+  overlay.addEventListener("click", toggleOverlay);
+
+  sentenceWrapper.appendChild(sentenceElement);
+  sentenceWrapper.appendChild(overlay);
 
   const button = document.createElement("button");
   button.className = "play-button";
@@ -99,9 +204,27 @@ sentences.forEach((sentence, index) => {
   audio.src =
     index === 0 ? `audio/Recording.m4a` : `audio/Recording (${index + 1}).m4a`;
 
-  row.appendChild(sentenceElement);
+  // Checkbox to show/hide answer
+  const label = document.createElement("label");
+  label.className = "answerlabel";
+  label.style.display = "block";
+  label.style.marginTop = "5px";
+  label.innerHTML = `<input type="checkbox" class="toggle-answer">`;
+
+  const answer = document.createElement("div");
+  answer.className = "answer";
+  answer.textContent = answers[index] || "";
+  answer.style.visibility = "hidden";
+
+  label.querySelector(".toggle-answer").addEventListener("change", function () {
+    answer.style.visibility = this.checked ? "visible" : "hidden";
+  });
+
   row.appendChild(button);
+  row.appendChild(sentenceWrapper);
   row.appendChild(audio);
+  row.appendChild(label);
+  row.appendChild(answer);
 
   container.appendChild(row);
 });
