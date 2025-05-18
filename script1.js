@@ -161,6 +161,9 @@ const answers = [
 ];
 
 const container = document.getElementById("sentence-container");
+const checkedAnswers = JSON.parse(
+  localStorage.getItem("checkedAnswers") || "[]"
+);
 
 sentences.forEach((sentence, index) => {
   const row = document.createElement("div");
@@ -215,8 +218,19 @@ sentences.forEach((sentence, index) => {
   answer.textContent = answers[index] || "";
   answer.style.visibility = "hidden";
 
+  const checkbox = label.querySelector(".toggle-answer");
+  // Restore state
+  checkbox.checked = checkedAnswers[index] || false;
+  answer.style.visibility = checkbox.checked ? "visible" : "hidden";
+
   label.querySelector(".toggle-answer").addEventListener("change", function () {
     answer.style.visibility = this.checked ? "visible" : "hidden";
+    // Save state to localStorage
+    let checkedAnswers = JSON.parse(
+      localStorage.getItem("checkedAnswers") || "[]"
+    );
+    checkedAnswers[index] = this.checked;
+    localStorage.setItem("checkedAnswers", JSON.stringify(checkedAnswers));
   });
 
   row.appendChild(button);
