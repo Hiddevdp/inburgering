@@ -1,3 +1,6 @@
+body {
+  font-family: sans-serif;
+}
 nav {
   display: flex;
   justify-content: space-around;
@@ -9,11 +12,16 @@ nav {
     padding: 10px 15px;
     border-radius: 5em;
   }
+  .current {
+    color: white;
+    background-color: black;
+  }
 }
 
-h1 {
-  width: 100%;
-  text-align: center;
+.resetbtn {
+  width: max-content;
+  margin: 10px 0;
+  align-self: end;
 }
 .container {
   display: flex;
@@ -91,7 +99,7 @@ h1 {
   left: 0;
   width: 100%;
   min-height: 100%;
-  background: black;
+  background: white;
   opacity: 1;
   transition: opacity 0.2s;
   pointer-events: auto;

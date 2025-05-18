@@ -222,15 +222,35 @@ sentences.forEach((sentence, index) => {
   // Restore state
   checkbox.checked = checkedAnswers[index] || false;
   answer.style.visibility = checkbox.checked ? "visible" : "hidden";
+  overlay.style.opacity = checkbox.checked ? "0" : "1";
+  overlay.style.pointerEvents = checkbox.checked ? "none" : "auto";
 
   label.querySelector(".toggle-answer").addEventListener("change", function () {
     answer.style.visibility = this.checked ? "visible" : "hidden";
+    overlay.style.opacity = this.checked ? "0" : "1";
+    overlay.style.pointerEvents = this.checked ? "none" : "auto";
     // Save state to localStorage
     let checkedAnswers = JSON.parse(
       localStorage.getItem("checkedAnswers") || "[]"
     );
     checkedAnswers[index] = this.checked;
     localStorage.setItem("checkedAnswers", JSON.stringify(checkedAnswers));
+
+    // Check if all are checked
+    const allChecked = Array.from(
+      document.querySelectorAll(".toggle-answer")
+    ).every((cb) => cb.checked);
+    if (allChecked) {
+      // Play your finished audio (make sure this audio element exists in your HTML)
+      let finishedAudio = document.getElementById("finished-audio");
+      if (!finishedAudio) {
+        finishedAudio = document.createElement("audio");
+        finishedAudio.id = "finished-audio";
+        finishedAudio.src = "audio/Booyah.m4a";
+        document.body.appendChild(finishedAudio);
+      }
+      finishedAudio.play();
+    }
   });
 
   row.appendChild(button);
@@ -245,4 +265,40 @@ sentences.forEach((sentence, index) => {
 function playAudio(audioId) {
   const audio = document.getElementById(audioId);
   audio.play();
+}
+
+const resetBtn = document.querySelector(".resetbtn");
+if (resetBtn) {
+  resetBtn.addEventListener("click", () => {
+    // Uncheck all checkboxes and reset UI
+    document.querySelectorAll(".toggle-answer").forEach((cb, idx) => {
+      cb.checked = false;
+      // Hide answer
+      const answer = cb.closest("label").nextElementSibling;
+      if (answer && answer.classList.contains("answer")) {
+        answer.style.visibility = "hidden";
+      }
+      // Show overlay
+      const row = cb.closest(".row");
+      if (row) {
+        const overlay = row.querySelector(".sentence-overlay");
+        if (overlay) {
+          overlay.style.opacity = "1";
+          overlay.style.pointerEvents = "auto";
+        }
+      }
+    });
+    // Clear localStorage
+    localStorage.removeItem("checkedAnswers");
+
+    // Play reset audio
+    let resetAudio = document.getElementById("reset-audio");
+    if (!resetAudio) {
+      resetAudio = document.createElement("audio");
+      resetAudio.id = "reset-audio";
+      resetAudio.src = "audio/howcouldthishappentome.mp3"; // Change to your reset audio file path
+      document.body.appendChild(resetAudio);
+    }
+    resetAudio.play();
+  });
 }
