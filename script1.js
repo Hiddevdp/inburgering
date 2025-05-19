@@ -299,6 +299,7 @@ if (resetBtn) {
       resetAudio.src = "audio/howcouldthishappentome.mp3"; // Change to your reset audio file path
       document.body.appendChild(resetAudio);
     }
+    resetAudio.volume = 0.1;
     resetAudio.play();
   });
 }
